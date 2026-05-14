@@ -90,6 +90,7 @@
   .hero { padding: 28px 0 36px; text-align: center; position: relative; }
   .hero-mark { display: block; margin: 0 auto 14px; height: 96px; width: auto; transform: rotate(-2deg); transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1); }
   .hero-mark:hover { transform: rotate(2deg) scale(1.03); }
+  .hero-banner { display: block; margin: 36px auto 0; max-width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--rule); box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
   .kicker { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 0 0 14px; }
   h1 { font-family: "Georgia", "New York", serif; font-weight: 500; font-size: 52px; line-height: 1.06; letter-spacing: -0.02em; margin: 0 auto 18px; max-width: 22ch; }
   h1 .accent { color: var(--accent); position: relative; display: inline-block; }
@@ -146,6 +147,9 @@
   .flow-fallback { display: none; list-style: none; padding: 0; margin: 0; counter-reset: step; }
   .flow-fallback li { counter-increment: step; padding: 14px 16px 14px 56px; position: relative; border: 1px solid var(--rule); border-radius: 10px; background: var(--paper-2); margin-bottom: 10px; font-size: 15px; color: var(--ink); }
   .flow-fallback li::before { content: counter(step); position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .flow-steps { list-style: none; padding: 0; margin: 22px 0 0; counter-reset: step; display: grid; gap: 12px; }
+  .flow-steps li { counter-increment: step; padding: 16px 18px 16px 60px; position: relative; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); font-size: 16px; color: var(--ink); line-height: 1.5; }
+  .flow-steps li::before { content: counter(step); position: absolute; left: 18px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: var(--paper); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; }
   .caption { font-size: 13.5px; color: var(--muted); text-align: center; margin-top: 12px; max-width: 70ch; margin-left: auto; margin-right: auto; }
 
   /* Differentiator table */
@@ -250,6 +254,7 @@
       <a class="btn btn-primary" href="#install">Install</a>
       <a class="btn btn-secondary" href="https://github.com/nathan-hekman/cc-imessage-remote-control">View on GitHub</a>
     </div>
+    <img class="hero-banner" src="assets/hero-flow-v2.png" alt="Text 'claude ice cream' in iMessage, Siri Shortcuts opens Claude Code on your Mac with /remote-control active in ~/Documents/ice-cream-bot, then the Claude mobile app shows a connected 'ice cream project' session." />
   </div>
 </section>
 
@@ -257,15 +262,12 @@
   <div class="wrap">
     <h2>How the trip works.</h2>
     <p class="lede">Today there's no way to start a Claude Code session on your Mac from your phone, you have to be physically at the Mac to run <code>claude</code> and then <code>/remote-control</code> before the session shows up in the Claude app. The only alternative is a cloud environment. This plugin solves that.</p>
-    <div class="diagram">
-      <img class="flow-svg" src="assets/hero-flow-v2.png" alt="Text 'claude ice cream' in iMessage, Siri Shortcuts opens Claude Code on your Mac with /remote-control active in ~/Documents/ice-cream-bot, then the Claude mobile app shows a connected 'ice cream project' session." />
-      <ol class="flow-fallback" aria-label="Flow steps">
-        <li><strong>iPhone</strong>, text yourself <code>Claude &lt;projectname&gt;</code>.</li>
-        <li><strong>Mac</strong>, native Shortcut catches the keyword and launches a local <code>claude</code> session in that project with <code>/remote-control</code> on.</li>
-        <li><strong>Claude mobile app</strong>, the new session shows up connected in the Code tab. Tap to drive.</li>
-      </ol>
-      <p class="caption">One keyword in. One local session live. Claude never sees a message it wasn't addressed in.</p>
-    </div>
+    <ol class="flow-steps" aria-label="Flow steps">
+      <li><strong>iPhone</strong>, text yourself <code>Claude &lt;projectname&gt;</code>.</li>
+      <li><strong>Mac</strong>, native Shortcut catches the keyword and launches a local <code>claude</code> session in that project with <code>/remote-control</code> on.</li>
+      <li><strong>Claude mobile app</strong>, the new session shows up connected in the Code tab. Tap to drive.</li>
+    </ol>
+    <p class="caption">One keyword in. One local session live. Claude never sees a message it wasn't addressed in.</p>
   </div>
 </section>
 
