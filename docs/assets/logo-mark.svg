@@ -1,27 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" role="img" aria-label="cc-imessage-remote-control — a red C, a blue C, and a friendly smile.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 300" role="img" aria-label="cc-imessage-remote-control — a TiVo-style smiling TV with two antennas, an orange C and blue C as eyes, a white smile, and two little legs.">
   <style>
-    .smile { stroke: #1a1a1a; fill: none; stroke-width: 9; stroke-linecap: round; }
+    .body { fill: #1a1a1a; }
     @media (prefers-color-scheme: dark) {
-      .smile { stroke: #faf8f4; }
+      .body { fill: #f0eee8; }
+      .smile { stroke: #1a1a1a; }
+      .c-orange { fill: #f5a623; }
+      .c-blue { fill: #2aa6e6; }
     }
   </style>
 
-  <!-- Red C, slightly tilted left -->
-  <text x="62" y="82"
-        font-family="'Marker Felt', 'Comic Sans MS', 'Chalkboard SE', -apple-system, BlinkMacSystemFont, Inter, sans-serif"
-        font-weight="900" font-size="90"
-        fill="#e51e25"
-        text-anchor="middle"
-        transform="rotate(-6 62 82)">c</text>
+  <!-- Antennas: drawn as thick black strokes with bulbs on top, attached to top of body -->
+  <g class="body" stroke="#1a1a1a" stroke-width="10" stroke-linecap="round" fill="none">
+    <!-- Left antenna: gentle right-leaning curve -->
+    <path d="M 88 95 C 80 70, 78 55, 78 45"/>
+    <!-- Right antenna: wavy/squiggle -->
+    <path d="M 132 95 C 138 75, 128 65, 138 55 C 146 47, 142 42, 144 36"/>
+  </g>
+  <!-- Antenna bulbs -->
+  <circle class="body" cx="78" cy="38" r="11"/>
+  <circle class="body" cx="144" cy="32" r="11"/>
 
-  <!-- Blue C, slightly tilted right -->
-  <text x="138" y="86"
-        font-family="'Marker Felt', 'Comic Sans MS', 'Chalkboard SE', -apple-system, BlinkMacSystemFont, Inter, sans-serif"
-        font-weight="900" font-size="90"
-        fill="#0a84ff"
-        text-anchor="middle"
-        transform="rotate(6 138 86)">c</text>
+  <!-- TV body: very rounded squircle -->
+  <rect class="body" x="38" y="92" width="144" height="138" rx="34" ry="34"/>
 
-  <!-- Wide TiVo-style smile, color adapts to background -->
-  <path class="smile" d="M 50 108 Q 100 134 150 108"/>
+  <!-- Eyes: two C letters -->
+  <text class="c-orange" x="78" y="180"
+        font-family="'Marker Felt', 'Comic Sans MS', 'Chalkboard SE', -apple-system, BlinkMacSystemFont, Inter, sans-serif"
+        font-weight="900" font-size="78"
+        fill="#f5a623"
+        text-anchor="middle">c</text>
+  <text class="c-blue" x="143" y="184"
+        font-family="'Marker Felt', 'Comic Sans MS', 'Chalkboard SE', -apple-system, BlinkMacSystemFont, Inter, sans-serif"
+        font-weight="900" font-size="78"
+        fill="#2aa6e6"
+        text-anchor="middle">c</text>
+
+  <!-- Smile: bold white curve -->
+  <path class="smile" d="M 70 200 Q 110 232 150 200" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round"/>
+
+  <!-- Legs: two pill/blob feet under body -->
+  <g class="body">
+    <ellipse cx="82" cy="262" rx="14" ry="10"/>
+    <path d="M 75 230 Q 70 250 75 262 L 89 262 Q 86 250 89 230 Z"/>
+    <ellipse cx="138" cy="262" rx="14" ry="10"/>
+    <path d="M 131 230 Q 128 250 131 262 L 145 262 Q 142 250 145 230 Z"/>
+  </g>
 </svg>

@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "cc-imessage-remote-control",
-  "description": "Text yourself a Claude Code session. iMessage 'Claude eBay' to your phone — your Mac spins up the session in that project with Remote Control on, ready to drive from your iOS Claude app.",
+  "description": "Text yourself 'Claude <projectname>' and your Mac opens a new local Claude Code session in that project with /remote-control on, ready to drive from the Claude mobile app. No chat.db reading.",
   "owner": {
     "name": "Nathan Hekman",
     "url": "https://github.com/nathan-hekman"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "cc-imessage-remote-control",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Spin up Claude Code Remote Control sessions on your Mac via iMessage. The plugin ships the router scripts plus an interactive setup wizard.",
       "source": "./",
       "category": "productivity"

@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="docs/assets/logo-mark.svg" alt="cc-imessage-remote-control logo, a TiVo-style smiling TV with a colorful CC wordmark." width="140">
+  <img src="docs/assets/cc.png" alt="cc-imessage-remote-control logo, a TiVo-style smiling TV character with two antennas, an orange C and blue C as eyes, and a friendly smile." width="140">
 </p>
 
 <h1 align="center">cc-imessage-remote-control</h1>
 
 <p align="center">
-  <strong>Text yourself <code>Claude eBay</code>. Your Mac opens a Claude Code session in that project.</strong><br>
-  iMessage starts it. Claude Code Remote Control drives it from your phone.
+  <strong>Text yourself "Claude &lt;projectname&gt;". Your Mac opens a new local Claude Code session in that project with <code>/remote-control</code> enabled, ready to drive from the Claude mobile app.</strong><br>
+  All running on your Mac. No giving Claude full access to your iMessage chats.
 </p>
 
 <p align="center">
@@ -17,12 +17,12 @@
 </p>
 
 <p align="center">
-  <img src="docs/assets/flow-diagram.svg" alt="Flow: text 'Claude eBay' from your iPhone → Mac matches the Shortcut, classifies via Haiku, opens Terminal with claude --remote-control → iOS Claude app picks up the live session." width="980">
+  <img src="docs/assets/hero-flow-v2.png" alt="Text 'claude ice cream' in iMessage, Siri Shortcuts opens Claude Code on your Mac with /remote-control active in ~/Documents/ice-cream-bot, then the Claude mobile app shows a connected 'ice cream project' session." width="980">
 </p>
 
 ---
 
-The Claude iOS app already has Remote Control, drive a Mac session from your phone. But until now you still had to *physically be at the Mac* to start the session. This bridge removes that step.
+Today there's no way to start a Claude Code session on your Mac from your phone, you have to be physically at the Mac to run `claude` and then `/remote-control` before the session shows up in the Claude app. The only alternative is a cloud environment. This plugin solves that.
 
 **You can spin up a Claude Code session from the couch, the airport, or a trail.** One text. One Apple-Push round-trip. Session live in the iOS app a few seconds later.
 

@@ -10,11 +10,15 @@ persist anything. Plain prose so the card reads as a reference.
 
 ## What it does
 
-Text yourself `Claude eBay` (or any project name) from your iPhone — your
-Mac opens a fresh Terminal window, `cd`s into that project, and starts
-`claude --remote-control "<slug>"`. Your Mac then iMessages you back a
-confirmation. You open the iOS Claude app → Code tab → tap the new
-session entry → drive the Mac from anywhere with cell signal.
+**Kick off Claude Code from iMessage. Keep your chat history yours.**
+
+Text yourself `Claude eBay` (or any project name) from your iPhone —
+a native macOS Shortcut catches the keyword and launches
+`claude --remote-control "<slug>"` in a fresh Terminal window. Your
+Mac iMessages you back a confirmation. You open the iOS Claude app →
+Code tab → tap the new session entry → drive the Mac from anywhere
+with cell signal. Claude never sees a message it wasn't explicitly
+addressed in — no `chat.db` reading.
 
 ## Why this is novel
 

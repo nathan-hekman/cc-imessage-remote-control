@@ -23,13 +23,17 @@ asks.
 
 ## Product purpose
 
-Text yourself "Claude eBay" — your Mac opens a Claude Code session in
-that project, Remote Control on, ready to drive from the iOS Claude app.
+**Kick off Claude Code from iMessage. Keep your chat history yours.**
 
-Existing path required physically being at the Mac to start the session.
-This bridge removes that step using **native macOS Shortcuts** as the
-trigger gate — no `chat.db` slurp like BlueBubbles or Anthropic's
-official iMessage MCP integration require.
+A native macOS Shortcut catches one keyword (your project name) and
+launches `claude --remote-control` on the Mac. You then drive the
+session from the iOS Claude app. Claude never sees a message it
+wasn't explicitly addressed in.
+
+Existing path required physically being at the Mac to start the
+session. This bridge removes that step using **native macOS Shortcuts**
+as the trigger gate — no `chat.db` slurp like BlueBubbles or
+Anthropic's official iMessage MCP integration require.
 
 ## Brand
 
@@ -73,8 +77,8 @@ What this landing page must **not** look or sound like:
    Claude Code feature — we're the doorbell that wakes it up. Don't
    over-claim. Don't oversell.
 5. **Friendly without being childish.** The TiVo-inspired logo and the
-   "text yourself a session" framing are warm; the docs are precise.
-   Don't let either drift toward the other.
+   "text yourself, keep your chat history" framing are warm; the docs
+   are precise. Don't let either drift toward the other.
 
 ## Surfaces
 

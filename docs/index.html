@@ -3,26 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
-<link rel="apple-touch-icon" href="assets/logo-mark.png">
-<title>cc-imessage-remote-control · text yourself a Claude Code session</title>
-<meta name="description" content="Text 'Claude eBay' to your own iPhone, your Mac opens a Claude Code session in that project, Remote Control on, ready to drive from the iOS Claude app. No chat.db reading. Native macOS Shortcuts only.">
+<link rel="icon" type="image/png" href="assets/cc.png">
+<link rel="apple-touch-icon" href="assets/cc.png">
+<title>cc-imessage-remote-control · start Claude Code from your phone</title>
+<meta name="description" content="Text yourself 'Claude <projectname>'. Your Mac opens a new local Claude Code session in that project with /remote-control enabled, ready to drive from the Claude mobile app. All running on your Mac. No giving Claude full access to your iMessage chats.">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nathan-hekman.github.io/cc-imessage-remote-control/">
-<meta property="og:title" content="cc-imessage-remote-control · text yourself a Claude Code session">
-<meta property="og:description" content="iMessage starts the session. Claude Code Remote Control drives it from your phone. Native macOS Shortcuts, no chat.db reading.">
+<meta property="og:title" content="cc-imessage-remote-control · start Claude Code from your phone">
+<meta property="og:description" content="Text yourself 'Claude <projectname>'. Your Mac opens a local Claude Code session with /remote-control enabled, ready to drive from the Claude mobile app. No chat.db access.">
 <meta property="og:image" content="https://nathan-hekman.github.io/cc-imessage-remote-control/assets/social-card.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="cc-imessage-remote-control · text yourself a Claude Code session. Native macOS Shortcuts. No chat.db reading.">
+<meta property="og:image:alt" content="cc-imessage-remote-control · start a local Claude Code session on your Mac by texting yourself a project name. No chat.db reading.">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="cc-imessage-remote-control">
-<meta name="twitter:description" content="Text yourself a Claude Code session. Native macOS Shortcuts, no chat.db reading.">
+<meta name="twitter:description" content="Text yourself 'Claude <projectname>'. Your Mac opens a local Claude Code session with /remote-control enabled, ready to drive from the Claude mobile app.">
 <meta name="twitter:image" content="https://nathan-hekman.github.io/cc-imessage-remote-control/assets/social-card.png">
-<meta name="twitter:image:alt" content="cc-imessage-remote-control · text yourself a Claude Code session. Native macOS Shortcuts. No chat.db reading.">
+<meta name="twitter:image:alt" content="cc-imessage-remote-control · start a local Claude Code session on your Mac by texting yourself a project name. No chat.db reading.">
 
 <style>
   :root {
@@ -91,7 +91,7 @@
   .hero-mark { display: block; margin: 0 auto 14px; height: 96px; width: auto; transform: rotate(-2deg); transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1); }
   .hero-mark:hover { transform: rotate(2deg) scale(1.03); }
   .kicker { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 0 0 14px; }
-  h1 { font-family: "Georgia", "New York", serif; font-weight: 500; font-size: 56px; line-height: 1.04; letter-spacing: -0.022em; margin: 0 auto 18px; max-width: 19ch; }
+  h1 { font-family: "Georgia", "New York", serif; font-weight: 500; font-size: 52px; line-height: 1.06; letter-spacing: -0.02em; margin: 0 auto 18px; max-width: 22ch; }
   h1 .accent { color: var(--accent); position: relative; display: inline-block; }
   h1 .accent::after { content: ""; position: absolute; left: -3%; right: -3%; bottom: 0.04em; height: 0.4em; background: var(--highlight); z-index: -1; transform: rotate(-0.6deg); }
   .subhead { font-size: 19px; color: var(--ink-soft); max-width: 52ch; margin: 0 auto 30px; }
@@ -229,7 +229,7 @@
 <div class="top">
   <div class="wrap">
     <div class="row">
-      <a class="brand" href="."><img class="mark" src="assets/logo-mark.svg" alt="" aria-hidden="true">cc-imessage-remote-control</a>
+      <a class="brand" href="."><img class="mark" src="assets/cc.png" alt="" aria-hidden="true">cc-imessage-remote-control</a>
       <a class="ghlink" href="https://github.com/nathan-hekman/cc-imessage-remote-control">
         <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         GitHub
@@ -240,11 +240,11 @@
 
 <section class="hero">
   <div class="wrap">
-    <img class="hero-mark" src="assets/logo-mark.svg" alt="cc-imessage-remote-control logo, a TiVo-style smiling TV with a colorful CC wordmark.">
+    <img class="hero-mark" src="assets/cc.png" alt="cc-imessage-remote-control logo, a TiVo-style smiling TV character with two antennas, an orange C and blue C as eyes, and a friendly smile.">
     <p class="kicker">Claude Code · iMessage Bridge</p>
-    <h1>Text yourself <span class="accent">a Claude Code session</span>.</h1>
+    <h1>Text yourself "Claude &lt;projectname&gt;". <span class="accent">Drive it from the Claude mobile app.</span></h1>
     <p class="subhead">
-      iMessage <code>Claude eBay</code> to your own number. Your Mac opens the project, Remote Control on, ready to drive from the iOS Claude app a few seconds later.
+      Your Mac opens a new local Claude Code session in that project with <code>/remote-control</code> enabled, ready to drive from the Claude mobile app. All running on your Mac. No giving Claude full access to your iMessage chats.
     </p>
     <div class="cta">
       <a class="btn btn-primary" href="#install">Install</a>
@@ -256,15 +256,15 @@
 <section class="alt">
   <div class="wrap">
     <h2>How the trip works.</h2>
-    <p class="lede">One iMessage in. One Terminal pop on the Mac. One session live in the iOS Claude app. Apple Push handles the network, no Tailscale, no VPN, no chat.db.</p>
+    <p class="lede">Today there's no way to start a Claude Code session on your Mac from your phone, you have to be physically at the Mac to run <code>claude</code> and then <code>/remote-control</code> before the session shows up in the Claude app. The only alternative is a cloud environment. This plugin solves that.</p>
     <div class="diagram">
-      <img class="flow-svg" src="assets/flow-diagram.svg" alt="iPhone texts 'Claude eBay'. Mac runs Shortcuts filter, classifies the phrase via Haiku, opens Terminal with claude --remote-control. Session shows up live in the iOS Claude app." />
+      <img class="flow-svg" src="assets/hero-flow-v2.png" alt="Text 'claude ice cream' in iMessage, Siri Shortcuts opens Claude Code on your Mac with /remote-control active in ~/Documents/ice-cream-bot, then the Claude mobile app shows a connected 'ice cream project' session." />
       <ol class="flow-fallback" aria-label="Flow steps">
-        <li><strong>iPhone</strong>, you text <code>Claude eBay</code> to your own number.</li>
-        <li><strong>Mac</strong>, Shortcuts filter matches, Haiku maps <code>eBay</code> → <code>ebay-scrape-new</code>, Terminal opens with <code>claude --remote-control</code>.</li>
-        <li><strong>iOS Claude app</strong>, the new session shows up live in the Code tab. Tap to drive.</li>
+        <li><strong>iPhone</strong>, text yourself <code>Claude &lt;projectname&gt;</code>.</li>
+        <li><strong>Mac</strong>, native Shortcut catches the keyword and launches a local <code>claude</code> session in that project with <code>/remote-control</code> on.</li>
+        <li><strong>Claude mobile app</strong>, the new session shows up connected in the Code tab. Tap to drive.</li>
       </ol>
-      <p class="caption">iMessage starts the session. Claude Code Remote Control drives it from there. Nothing reads <code>chat.db</code>.</p>
+      <p class="caption">One keyword in. One local session live. Claude never sees a message it wasn't addressed in.</p>
     </div>
   </div>
 </section>
