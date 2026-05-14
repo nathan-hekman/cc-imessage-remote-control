@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
+<link rel="apple-touch-icon" href="assets/logo-mark.png">
 <title>cc-imessage-remote-control — text yourself a Claude Code session</title>
 <meta name="description" content="Text 'Claude eBay' to your own iPhone — your Mac opens a Claude Code session in that project, Remote Control on, ready to drive from the iOS Claude app. No chat.db reading. Native macOS Shortcuts only.">
 
@@ -76,13 +78,15 @@
   /* Top bar */
   .top { padding: 22px 0 0; }
   .top .row { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 700; letter-spacing: -0.01em; }
-  .brand .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
+  .brand img.mark { display: block; width: 28px; height: 34px; }
+  .brand:hover { text-decoration: none; }
   .top a.ghlink { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); padding: 7px 14px; border: 1px solid var(--rule-strong); border-radius: 999px; font-weight: 500; font-size: 14px; }
   .top a.ghlink:hover { color: var(--ink); border-color: var(--ink); text-decoration: none; }
 
   /* HERO */
-  .hero { padding: 56px 0 28px; text-align: center; position: relative; }
+  .hero { padding: 48px 0 28px; text-align: center; position: relative; }
+  .hero-mark { display: block; margin: 0 auto 22px; height: 130px; width: auto; }
   .kicker { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 0 0 18px; }
   h1 { font-family: "Georgia", "New York", serif; font-weight: 500; font-size: 56px; line-height: 1.05; letter-spacing: -0.022em; margin: 0 auto 18px; max-width: 16ch; }
   h1 .accent { color: var(--accent); position: relative; display: inline-block; }
@@ -166,7 +170,7 @@
 <div class="top">
   <div class="wrap">
     <div class="row">
-      <span class="brand"><span class="dot"></span>cc-imessage-remote-control</span>
+      <a class="brand" href="."><img class="mark" src="assets/logo-mark.svg" alt="" aria-hidden="true">cc-imessage-remote-control</a>
       <a class="ghlink" href="https://github.com/nathan-hekman/cc-imessage-remote-control">
         <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         GitHub
@@ -177,6 +181,7 @@
 
 <section class="hero">
   <div class="wrap">
+    <img class="hero-mark" src="assets/logo-mark.svg" alt="cc-imessage-remote-control logo — a TiVo-style smiling TV with a colorful CC wordmark.">
     <p class="kicker">Claude Code · iMessage Bridge</p>
     <h1>Text yourself <span class="accent">a Claude Code session</span>.</h1>
     <p class="subhead">

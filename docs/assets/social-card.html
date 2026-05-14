@@ -15,11 +15,17 @@
     position: relative;
   }
   .brand {
-    position: absolute; top: 40px; left: 80px;
-    display: inline-flex; align-items: center; gap: 12px;
-    font-weight: 700; font-size: 18px; letter-spacing: -0.005em; color: #1a1a1a;
+    position: absolute; top: 36px; left: 80px;
+    display: inline-flex; align-items: center; gap: 14px;
+    font-weight: 700; font-size: 20px; letter-spacing: -0.005em; color: #1a1a1a;
   }
-  .brand .dot { width: 12px; height: 12px; border-radius: 50%; background: #0a84ff; box-shadow: 0 0 0 3px #d9ebff; }
+  .brand img.mark { display: block; height: 48px; width: auto; }
+  .hero-mark {
+    position: absolute; top: 60px; right: 80px;
+    height: 220px; width: auto; display: block;
+    transform: rotate(6deg);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.08));
+  }
   .kicker {
     font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase;
     color: #6b6258; font-weight: 700; margin: 0 0 18px;
@@ -65,7 +71,8 @@
 </style>
 </head>
 <body>
-  <span class="brand"><span class="dot"></span>cc-imessage-remote-control</span>
+  <span class="brand"><img class="mark" src="logo-mark.svg" alt="">cc-imessage-remote-control</span>
+  <img class="hero-mark" src="logo-mark.svg" alt="">
 
   <p class="kicker">Claude Code · iMessage Bridge</p>
   <h1>Text yourself <span class="accent">a Claude Code session</span>.</h1>

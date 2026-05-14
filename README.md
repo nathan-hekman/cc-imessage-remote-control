@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/logo-mark.svg" alt="cc-imessage-remote-control logo — a TiVo-style smiling TV with a colorful CC wordmark." width="140">
+</p>
+
 <h1 align="center">cc-imessage-remote-control</h1>
 
 <p align="center">
