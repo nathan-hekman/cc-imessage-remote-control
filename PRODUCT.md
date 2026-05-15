@@ -1,4 +1,4 @@
-# cc-imessage-remote-control — product context
+# cc-remote-control — product context
 
 ## Register
 
@@ -10,10 +10,11 @@ deeper-dive secondary material.
 ## Users
 
 Developers on **Claude Code Pro/Max plans** who:
-- Code on a Mac (macOS 14+)
-- Use an iPhone signed into the same iCloud as the Mac
+- Code on a Mac (macOS 14+) **or** a Linux box with Tailscale or LAN
+- Use an iPhone signed into the same iCloud as the Mac (Mac path), or
+  any iPhone with Shortcuts (Linux path — phone is the trigger source)
 - Want to spin up Claude Code Remote Control sessions from anywhere with
-  cell signal — couch, airport, trail — without physically being at the Mac
+  cell signal — couch, airport, trail — without physically being at the box
 - Care about privacy. They will not grant Full Disk Access to a third-party
   app to read their iMessage history just to get a remote-trigger feature.
 
@@ -24,17 +25,18 @@ asks.
 
 ## Product purpose
 
-**Kick off Claude Code from iMessage. Keep your chat history yours.**
+**Kick off Claude Code from a text. Keep your chat history yours.**
 
-A native macOS Shortcut catches one keyword (your project name) and
-launches `claude --remote-control` on the Mac. You then drive the
+A native Shortcut (macOS) or a tiny authenticated HTTP listener
+(Linux) catches one keyword + project name and launches
+`claude --remote-control` on the target box. You then drive the
 session from the iOS Claude app. Claude never sees a message it
 wasn't explicitly addressed in.
 
-Existing path required physically being at the Mac to start the
-session. This bridge removes that step using **native macOS Shortcuts**
-as the trigger gate — no `chat.db` slurp like BlueBubbles or
-Anthropic's official iMessage MCP integration require.
+Existing path required physically being at the box to start the
+session. This bridge removes that step using **native iOS/macOS
+Shortcuts** as the trigger source — no `chat.db` slurp like
+BlueBubbles or Anthropic's official iMessage MCP integration require.
 
 ## Brand
 
@@ -73,7 +75,7 @@ What this landing page must **not** look or sound like:
 2. **Native is the moat.** macOS Shortcuts is a known, trusted, Apple-
    first-party surface. Use that recognition in the visual language.
 3. **Install must look turnkey.** Two `claude plugin` commands +
-   `/cc-imessage setup`. Show that, prominently, near the top.
+   `/cc-remote-control setup`. Show that, prominently, near the top.
 4. **No exaggeration.** The remote-driving experience itself is a
    Claude Code feature — we're the doorbell that wakes it up. Don't
    over-claim. Don't oversell.

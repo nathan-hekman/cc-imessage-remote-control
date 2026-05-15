@@ -1,30 +1,45 @@
 #!/bin/bash
-# claude-router.sh — entry point invoked by the Shortcuts "Run Shell Script"
-# action that fires when an incoming iMessage from you (matching the Sender
-# filter you set in Shortcuts) contains the keyword "claude". The Shortcut
-# MUST pass the message body as $1.
+# claude-router.sh — the main entry point for cc-remote-control.
 #
-# Flow:
-#   1. Load config (~/.claude/.cc-imessage-env, falling back to repo-local .env).
-#   2. Drop messages that start with our reply prefix (loop avoidance).
+# Called by:
+#   - macOS: Shortcuts "Run Shell Script" action when an incoming iMessage
+#     from you matches the keyword filter. Shortcuts passes the message
+#     body as $1.
+#   - Linux: bin/cc_remote_listen.py HTTP listener when it receives a
+#     POST /trigger with the message body. Listener invokes this script
+#     with the body as $1.
+#
+# Flow (both platforms):
+#   1. Load config (~/.claude/.cc-remote-env, falling back to legacy
+#      .cc-imessage-env, falling back to repo-local .env).
+#   2. Drop messages that start with our reply prefix (loop avoidance —
+#      only matters on macOS where we send a reply iMessage back).
 #   3. Strip the leading "Claude" / "claude" keyword off the body.
-#   4. Ask infer_project.sh which project slug the remaining phrase points to.
-#   5. Open a new Terminal.app window: cd <project> && claude --remote-control.
-#   6. Send a confirmation iMessage back.
+#   4. Ask infer_project.sh which project slug the remaining phrase
+#      points to.
+#   5. Open a new terminal window: cd <project> && claude --remote-control.
+#      macOS uses Terminal.app via AppleScript. Linux tries
+#      gnome-terminal / konsole / xterm / kitty / alacritty / tilix /
+#      x-terminal-emulator in order, falling back to a detached tmux
+#      session when no display is available.
+#   6. On macOS only, send a confirmation iMessage back. Linux skips
+#      the reply step (per design — the iOS Claude app shows the new
+#      session as feedback).
 
 set -uo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 # Logs live in the user's Claude config dir so they survive plugin updates.
-# Override with CC_IMESSAGE_LOG_DIR if you want them somewhere else.
+# Override with CC_REMOTE_LOG_DIR (legacy CC_IMESSAGE_LOG_DIR) if you want
+# them somewhere else.
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
-LOG_DIR="${CC_IMESSAGE_LOG_DIR:-$CLAUDE_DIR/.cc-imessage-logs}"
+LOG_DIR="${CC_REMOTE_LOG_DIR:-${CC_IMESSAGE_LOG_DIR:-$CLAUDE_DIR/.cc-remote-logs}}"
 mkdir -p "$LOG_DIR" 2>/dev/null || LOG_DIR="$PROJECT_DIR/logs" && mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/router.log"
 
-# zsh / non-interactive Shortcuts shells don't load .zshrc. Make sure
-# `claude` and `osascript` are findable.
+# Non-interactive shells (Shortcuts on macOS, systemd on Linux) don't load
+# the user's .zshrc/.bashrc. Make sure `claude` and friends are findable.
 export PATH="$HOME/.local/bin:$HOME/.claude/local:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 
 log() {
@@ -32,9 +47,11 @@ log() {
 }
 
 # Load config. Search order:
-#   1. $CC_IMESSAGE_ENV (explicit override)
-#   2. $CLAUDE_CONFIG_DIR/.cc-imessage-env  (preferred — survives plugin updates)
-#   3. $PROJECT_DIR/.env                          (dev fallback — repo-local)
+#   1. $CC_REMOTE_ENV (explicit override)
+#   2. $CC_IMESSAGE_ENV (legacy explicit override)
+#   3. $CLAUDE_CONFIG_DIR/.cc-remote-env (preferred — survives plugin updates)
+#   4. $CLAUDE_CONFIG_DIR/.cc-imessage-env (legacy location, pre-v0.4.0)
+#   5. $PROJECT_DIR/.env (dev fallback — repo-local)
 load_env() {
   local f="$1"
   [ -f "$f" ] || return 1
@@ -46,7 +63,11 @@ load_env() {
   return 0
 }
 
-if [ -n "${CC_IMESSAGE_ENV:-}" ] && load_env "$CC_IMESSAGE_ENV"; then
+if [ -n "${CC_REMOTE_ENV:-}" ] && load_env "$CC_REMOTE_ENV"; then
+  :
+elif [ -n "${CC_IMESSAGE_ENV:-}" ] && load_env "$CC_IMESSAGE_ENV"; then
+  :
+elif load_env "$CLAUDE_DIR/.cc-remote-env"; then
   :
 elif load_env "$CLAUDE_DIR/.cc-imessage-env"; then
   :
@@ -59,11 +80,20 @@ fi
 SEND="$PROJECT_DIR/bin/imessage_send.sh"
 INFER="$PROJECT_DIR/bin/infer_project.sh"
 LIST="$PROJECT_DIR/bin/build_project_list.sh"
-PREFIX="${IMESSAGE_PREFIX:-[CR]}"
+PREFIX="${REPLY_PREFIX:-${IMESSAGE_PREFIX:-[CR]}}"
+PLATFORM="$(uname)"
+
+# reply <msg> — only sends on macOS; no-op on Linux.
+reply() {
+  if [ "$PLATFORM" = "Darwin" ]; then
+    "$SEND" "$1" || true
+  else
+    log "reply (linux, skipped): $1"
+  fi
+}
 
 msg="${1:-}"
-# Fall back to stdin in case the Shortcut's "Run Shell Script" action is
-# configured to pipe input rather than pass it as argv.
+# Fall back to stdin if the caller piped input rather than passing argv.
 if [ -z "$msg" ] && [ ! -t 0 ]; then
   msg="$(cat)"
 fi
@@ -82,7 +112,7 @@ case "$msg" in
     ;;
 esac
 
-# Strip leading "Claude" / "claude" (case-insensitive) plus any trailing
+# Strip leading "Claude" / "claude" (case-insensitive) plus trailing
 # punctuation/whitespace.
 phrase=$(printf '%s' "$msg" \
   | sed -E 's/^[[:space:]]*[Cc][Ll][Aa][Uu][Dd][Ee][[:space:][:punct:]]*//' \
@@ -91,44 +121,99 @@ log "phrase: '$phrase'"
 
 if [ -z "$phrase" ]; then
   available=$("$LIST" | cut -d'|' -f1 | head -10 | paste -sd, -)
-  "$SEND" "Which project? Try one of: $available" || true
+  reply "Which project? Try one of: $available"
   log "empty phrase; sent menu"
   exit 0
 fi
 
-# Ask Haiku.
 slug=$("$INFER" "$phrase" 2>>"$LOG_FILE")
 log "infer → $slug"
 
 if [ -z "$slug" ] || [ "$slug" = "NONE" ]; then
   available=$("$LIST" | cut -d'|' -f1 | head -10 | paste -sd, -)
-  "$SEND" "Couldn't match '$phrase'. Try: $available" || true
+  reply "Couldn't match '$phrase'. Try: $available"
   exit 0
 fi
 
-# Look up the directory path for the slug.
 path=$("$LIST" | awk -F'|' -v s="$slug" '$1==s {print $2; exit}')
 if [ -z "$path" ]; then
-  "$SEND" "Matched '$slug' but no path found. Check build_project_list.sh." || true
+  reply "Matched '$slug' but no path found. Check build_project_list.sh."
   log "ERROR: no path for slug $slug"
   exit 1
 fi
 
-# Escape for AppleScript: backslash and double-quote only.
-escaped_path=$(printf '%s' "$path" | sed 's/\\/\\\\/g; s/"/\\"/g')
-WINDOW_TITLE="Claude — $slug"
-
-# Open a new Terminal window, cd into the project, and start an interactive
-# claude session with Remote Control on. The session name passed to
-# --remote-control is what shows up in the iOS Claude app under Code.
-osascript <<APPLESCRIPT
+# Launch a new terminal with `claude --remote-control "<slug>"` running.
+launch_macos() {
+  local escaped_path
+  escaped_path=$(printf '%s' "$path" | sed 's/\\/\\\\/g; s/"/\\"/g')
+  local title="Claude — $slug"
+  osascript <<APPLESCRIPT
 tell application "Terminal"
     activate
     set newTab to do script "cd \"$escaped_path\" && claude --remote-control \"$slug\""
     delay 0.3
-    set custom title of newTab to "$WINDOW_TITLE"
+    set custom title of newTab to "$title"
 end tell
 APPLESCRIPT
+}
 
-"$SEND" "Session started in $slug. Open the Claude app to continue." || true
+launch_linux() {
+  local cmd="cd \"$path\" && claude --remote-control \"$slug\"; exec \${SHELL:-bash}"
+
+  # Headless box (no display server) — drop into a detached tmux session.
+  if [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; then
+    if command -v tmux >/dev/null 2>&1; then
+      tmux new-session -d -s "$slug" -c "$path" "claude --remote-control \"$slug\""
+      log "launched (tmux): session $slug"
+      return 0
+    fi
+    log "ERROR: no display and no tmux available"
+    return 1
+  fi
+
+  # Desktop: try common terminals in preference order.
+  for term in x-terminal-emulator gnome-terminal konsole tilix kitty alacritty xterm; do
+    if command -v "$term" >/dev/null 2>&1; then
+      case "$term" in
+        gnome-terminal)
+          # gnome-terminal swallows `-e` in recent versions; `--` is the
+          # forward-compat form.
+          "$term" -- bash -c "$cmd" >/dev/null 2>&1 &
+          ;;
+        konsole|tilix)
+          "$term" -e bash -c "$cmd" >/dev/null 2>&1 &
+          ;;
+        kitty|alacritty)
+          "$term" -e bash -c "$cmd" >/dev/null 2>&1 &
+          ;;
+        xterm|x-terminal-emulator)
+          "$term" -e "bash -c '$cmd'" >/dev/null 2>&1 &
+          ;;
+      esac
+      log "launched ($term): $slug at $path"
+      return 0
+    fi
+  done
+
+  log "ERROR: no terminal emulator found (tried gnome-terminal, konsole, etc.)"
+  return 1
+}
+
+case "$PLATFORM" in
+  Darwin)
+    launch_macos
+    ;;
+  Linux)
+    if ! launch_linux; then
+      log "FAILED to launch terminal for $slug"
+      exit 1
+    fi
+    ;;
+  *)
+    log "ERROR: unsupported platform $PLATFORM"
+    exit 1
+    ;;
+esac
+
+reply "Session started in $slug. Open the Claude app to continue."
 log "launched: $slug at $path"

@@ -1,0 +1,51 @@
+---
+description: "cc-remote-control controls — interactive setup wizard, status, test ping, log tail. Usage: /cc-remote-control setup | status | test | tail | help."
+argument-hint: "setup | status | test [phrase] | tail | help"
+---
+
+Interpret `$ARGUMENTS` as follows. Match exactly — do not be creative.
+
+If `$ARGUMENTS` is empty or `help`:
+- Print a one-line summary of the four sub-commands and stop. Do not invoke any skill.
+  ```
+  /cc-remote-control setup   → interactive setup wizard
+  /cc-remote-control status  → show config, log path, last few log lines
+  /cc-remote-control test    → run the router locally with a test phrase
+  /cc-remote-control tail    → tail the live router log
+  ```
+
+If `$ARGUMENTS` is `setup`:
+- Invoke the `cc-remote-control-setup` skill and follow it. On macOS it
+  walks the user through writing `~/.claude/.cc-remote-env`, the
+  Shortcuts shell-script line, opening Shortcuts.app, and a self-test.
+  On Linux it walks through writing the same config, generating an
+  HTTP listener secret, installing the systemd user service, and the
+  iPhone Personal Automation that POSTs to the box.
+
+If `$ARGUMENTS` is `status`:
+- Run `bash "${CLAUDE_PLUGIN_ROOT}/bin/build_project_list.sh"` and show
+  the user a clean table of slug → path so they can see which projects
+  are reachable. Also show:
+  - whether `~/.claude/.cc-remote-env` exists (and its `REPLY_TARGET` /
+    `REPLY_PREFIX` / `ROUTER_MODEL` values, with the phone number
+    masked except the last 4 digits). On Linux, also surface
+    `CC_REMOTE_BIND` / `CC_REMOTE_PORT` and whether
+    `CC_REMOTE_SECRET` is set (don't echo it).
+  - last 5 lines of `~/.claude/.cc-remote-logs/router.log` if it exists
+  - the absolute path of `claude-router.sh` (i.e. the line on macOS
+    Shortcuts, or the ExecStart= path on Linux systemd)
+
+If `$ARGUMENTS` is `test` or `test <phrase>`:
+- Default phrase if missing: `Claude help`.
+- Run `bash "${CLAUDE_PLUGIN_ROOT}/bin/claude-router.sh" "<phrase>"` in
+  a Bash tool call and report what happened. Surface the log delta
+  produced by this run (`tail -5 ~/.claude/.cc-remote-logs/router.log`).
+- Do not generate a TLDR or HTML one-pager for status/test/tail output
+  — these are operational commands.
+
+If `$ARGUMENTS` is `tail`:
+- Run `tail -20 ~/.claude/.cc-remote-logs/router.log` and show the
+  output verbatim. Then suggest the user run `tail -f` in a real
+  terminal if they want a live feed.
+
+Always end with a single-line pointer to the docs: `Full reference: https://github.com/nathan-hekman/cc-remote-control`.

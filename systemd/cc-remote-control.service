@@ -1,0 +1,40 @@
+[Unit]
+Description=cc-remote-control HTTP trigger listener
+Documentation=https://github.com/nathan-hekman/cc-remote-control
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Source the user's config so CC_REMOTE_SECRET / BIND / PORT and the
+# regular config keys (REPLY_PREFIX, PROJECTS_ROOT, ...) are in env.
+# systemd EnvironmentFile= cannot handle shell quoting, but our .env
+# file is simple KEY="value" lines so it works for most cases. If your
+# values contain $ or backticks, switch to a wrapper script instead.
+EnvironmentFile=%h/.claude/.cc-remote-env
+
+# The exact path here depends on where the plugin is installed. After
+# `claude plugin install`, it lives under:
+#   %h/.claude/plugins/cache/cc-remote-control/cc-remote-control/<commit>/
+# Update this line to match your install (the setup wizard prints the
+# right path for you).
+ExecStart=/usr/bin/env python3 %h/.claude/plugins/cache/cc-remote-control/cc-remote-control/HEAD/bin/cc_remote_listen.py
+
+Restart=on-failure
+RestartSec=5s
+
+# Hardening — this service only needs to spawn claude-router.sh and
+# bind a port. No filesystem writes outside the log dir.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.claude/.cc-remote-logs
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=true
+
+[Install]
+WantedBy=default.target

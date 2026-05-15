@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// cc-imessage-update-check.js — standalone update probe.
+// cc-remote-update-check.js — standalone update probe.
 //
-// Hits GitHub's "latest release" API for nathan-hekman/cc-imessage-remote-control,
-// parses the version from the tag (`cc-imessage-remote-control--vX.Y.Z` → `X.Y.Z`),
+// Hits GitHub's "latest release" API for nathan-hekman/cc-remote-control,
+// parses the version from the tag (`cc-remote-control--vX.Y.Z` → `X.Y.Z`),
 // compares to the installed plugin.json version, and writes:
 //
-//   $CLAUDE_CONFIG_DIR/.cc-imessage-update-available   contains "X.Y.Z" if newer
-//   $CLAUDE_CONFIG_DIR/.cc-imessage-update-check       touched on every run (TTL)
+//   $CLAUDE_CONFIG_DIR/.cc-remote-update-available   contains "X.Y.Z" if newer
+//   $CLAUDE_CONFIG_DIR/.cc-remote-update-check       touched on every run (TTL)
 //
 // Designed to be fire-and-forget from the SessionStart hook so the network
 // call never blocks Claude's startup. Quiet-fails on every error.
@@ -18,12 +18,12 @@ const os = require('os');
 
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24h
 const HTTP_TIMEOUT_MS = 4000;
-const REPO = 'nathan-hekman/cc-imessage-remote-control';
-const TAG_PREFIX = 'cc-imessage-remote-control--v';
+const REPO = 'nathan-hekman/cc-remote-control';
+const TAG_PREFIX = 'cc-remote-control--v';
 
 const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
-const flagPath = path.join(claudeDir, '.cc-imessage-update-available');
-const checkPath = path.join(claudeDir, '.cc-imessage-update-check');
+const flagPath = path.join(claudeDir, '.cc-remote-update-available');
+const checkPath = path.join(claudeDir, '.cc-remote-update-check');
 
 // Skip if we checked within the TTL window.
 try {
@@ -58,7 +58,7 @@ const req = https.request({
   path: `/repos/${REPO}/releases/latest`,
   method: 'GET',
   headers: {
-    'User-Agent': 'cc-imessage-remote-control-update-check',
+    'User-Agent': 'cc-remote-control-update-check',
     'Accept': 'application/vnd.github+json',
   },
   timeout: HTTP_TIMEOUT_MS,

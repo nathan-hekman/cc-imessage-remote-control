@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 #
-# cc-imessage-remote-control installer — local clone path.
+# cc-remote-control installer — local clone path.
 #
 # Default: registers the marketplace + installs the plugin via Claude Code's
-#          plugin manager, then prints the next-step pointer to /cc-imessage
-#          setup so the user wires up macOS Shortcuts interactively.
+#          plugin manager, then prints the next-step pointer to
+#          /cc-remote-control setup so the user wires up the trigger
+#          interactively (macOS Shortcuts or the Linux systemd listener).
 #
 # Flags:
 #   --plugin-only   Plugin install only (skip the next-step nudge).
@@ -18,9 +19,9 @@
 #
 set -euo pipefail
 
-REPO="nathan-hekman/cc-imessage-remote-control"
-MARKETPLACE_NAME="cc-imessage-remote-control"
-PLUGIN_NAME="cc-imessage-remote-control"
+REPO="nathan-hekman/cc-remote-control"
+MARKETPLACE_NAME="cc-remote-control"
+PLUGIN_NAME="cc-remote-control"
 
 PLUGIN_ONLY=0
 DRY=0
@@ -54,7 +55,7 @@ run() {
   fi
 }
 
-echo "cc-imessage-remote-control → install"
+echo "cc-remote-control → install"
 echo ""
 
 # 1. Add the marketplace (idempotent — claude handles "already added" gracefully).
@@ -76,13 +77,13 @@ fi
 
 cat <<'EOF'
 
-Next step — wire it into macOS Shortcuts:
+Next step — wire up the trigger:
 
   1. Restart Claude Code (or open a new session).
-  2. Run:  /cc-imessage setup
-  3. The setup wizard collects your phone number, writes the config file,
-     prints the exact line to paste into Shortcuts.app, and walks you
-     through the automation.
+  2. Run:  /cc-remote-control setup
+  3. The wizard detects your platform (macOS or Linux), collects your
+     config, and walks you through Shortcuts.app (macOS) or the systemd
+     listener + iPhone Personal Automation (Linux).
 
-Or read the docs first: https://github.com/nathan-hekman/cc-imessage-remote-control
+Or read the docs first: https://github.com/nathan-hekman/cc-remote-control
 EOF
